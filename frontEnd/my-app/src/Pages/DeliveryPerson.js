@@ -2,13 +2,19 @@ import { Container, Typography, List, ListItem, ListItemText, Button } from '@mu
 import { useState } from 'react';
 
 const DeliveryPerson = () => {
-  const [deliveries] = useState([
-    { id: 1, patient: 'John', room: '101', status: 'Pending' },
-    // Sample data
+  const [deliveries, setDeliveries] = useState([
+    { id: 1, patient: 'Rahi', room: '101', status: 'Pending' },
+    { id: 2, patient: 'Mahi', room: '102', status: 'Pending' },
   ]);
 
+
+  //handle delivery complete status
   const handleDeliveryComplete = (deliveryId) => {
-    // Update delivery status
+    setDeliveries(prevDeliveries =>
+      prevDeliveries.map(delivery =>
+        delivery.id === deliveryId ? { ...delivery, status: 'Delivered' } : delivery
+      )
+    );
   };
 
   return (
@@ -22,10 +28,12 @@ const DeliveryPerson = () => {
               secondary={`Status: ${delivery.status}`}
             />
             <Button 
-              variant="contained" 
+              variant="contained"
+              color={delivery.status === "Delivered" ? "success" : "primary"}
+              disabled={delivery.status === "Delivered"}
               onClick={() => handleDeliveryComplete(delivery.id)}
             >
-              Mark Delivered
+              {delivery.status === "Delivered" ? "Delivered" : "Mark Delivered"}
             </Button>
           </ListItem>
         ))}
