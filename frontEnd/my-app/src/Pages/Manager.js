@@ -6,7 +6,7 @@ import DietChartForm from '../Components/DietChartForm';
 
 const Manager = () => {
   const [patients] = useState([
-    { id: 1, name: 'John Doe', room: '101', diet: 'Low Sodium' },
+    { id: 1, name: 'John', room: '101', diet: 'Low Sodium' },
     // Sample data
   ]);
 

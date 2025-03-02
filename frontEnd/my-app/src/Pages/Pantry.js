@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const Pantry = () => {
   const [tasks] = useState([
-    { id: 1, patient: 'John Doe', meal: 'Breakfast', status: 'Pending' },
+    { id: 1, patient: 'John', meal: 'Breakfast', status: 'Pending' },
     { id: 2, patient: 'Mahi', meal: 'Breakfast', status: 'complete' },
     { id: 3, patient: 'Rahi', meal: 'Breakfast', status: 'in-process' },
     // Sample data

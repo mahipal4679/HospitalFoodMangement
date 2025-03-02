@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const morgan = require('morgan');
+const morgan = require('morgan'); 
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
@@ -33,8 +33,6 @@ app.use('/api/diet-charts', dietChartRoutes);
 app.use('/api/deliveries', deliveryRoutes);
 app.use('/api/pantry', pantryRoutes);
 
-// Error handling middleware (must be last!)
-//app.use(require('./middleware/errorHandler'));
 
 // Server configuration
 const PORT = process.env.PORT || 5000;

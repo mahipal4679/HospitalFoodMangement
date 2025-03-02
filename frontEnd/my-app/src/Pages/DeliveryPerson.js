@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const DeliveryPerson = () => {
   const [deliveries] = useState([
-    { id: 1, patient: 'John Doe', room: '101', status: 'Pending' },
+    { id: 1, patient: 'John', room: '101', status: 'Pending' },
     // Sample data
   ]);
 
