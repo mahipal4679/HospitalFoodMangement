@@ -1,6 +1,5 @@
 const PantryStaff = require('../models/PantryStaff');
 
-// @desc    Add pantry staff
 exports.addPantryStaff = async (req, res) => {
   const { name, contact, role } = req.body;
 
@@ -19,7 +18,6 @@ exports.addPantryStaff = async (req, res) => {
   }
 };
 
-// @desc    Get all pantry staff
 exports.getPantryStaff = async (req, res) => {
   try {
     const staff = await PantryStaff.find();
@@ -30,7 +28,6 @@ exports.getPantryStaff = async (req, res) => {
   }
 };
 
-// @desc    Assign preparation task
 exports.assignTask = async (req, res) => {
   const { staffId, taskDescription, deadline } = req.body;
 
@@ -52,7 +49,6 @@ exports.assignTask = async (req, res) => {
   }
 };
 
-// @desc    Update task status
 exports.updateTaskStatus = async (req, res) => {
   const { taskId, status } = req.body;
 

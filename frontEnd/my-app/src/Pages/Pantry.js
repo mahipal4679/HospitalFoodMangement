@@ -7,7 +7,7 @@ const Pantry = () => {
     { id: 1, patient: 'Mahi', meal: 'Breakfast', status: 'Pending' },
     { id: 2, patient: 'Mahipal', meal: 'Breakfast', status: 'complete' },
     { id: 3, patient: 'Rahi', meal: 'Breakfast', status: 'in-process' },
-    // Sample data
+    
   ]);
 
   const columns = [

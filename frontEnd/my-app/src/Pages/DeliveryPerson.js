@@ -7,8 +7,6 @@ const DeliveryPerson = () => {
     { id: 2, patient: 'Mahi', room: '102', status: 'Pending' },
   ]);
 
-
-  //handle delivery complete status
   const handleDeliveryComplete = (deliveryId) => {
     setDeliveries(prevDeliveries =>
       prevDeliveries.map(delivery =>
@@ -27,7 +25,7 @@ const DeliveryPerson = () => {
               primary={`${delivery.patient} (Room ${delivery.room})`}
               secondary={`Status: ${delivery.status}`}
             />
-            <Button 
+            <Button
               variant="contained"
               color={delivery.status === "Delivered" ? "success" : "primary"}
               disabled={delivery.status === "Delivered"}

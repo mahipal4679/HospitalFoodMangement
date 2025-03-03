@@ -1,7 +1,4 @@
-const Patient = require('../models/Patient');
-
-// @desc    Get all patients
-// @route   GET /api/patients
+const Patient = require('../models/Patient')
 exports.getPatients = async (req, res) => {
   try {
     const patients = await Patient.find().populate('dietChart');
@@ -11,9 +8,6 @@ exports.getPatients = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
-
-// @desc    Create new patient
-// @route   POST /api/patients
 exports.createPatient = async (req, res) => {
   const { name, roomNumber, diseases, allergies } = req.body;
 

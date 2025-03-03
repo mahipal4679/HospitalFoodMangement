@@ -1,15 +1,38 @@
+import { useState, useEffect } from 'react';
 import { Container, Typography, Grid2, Card, CardContent } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
+import axios from 'axios';
 import Patients from '../Components/Patients';
 import DietChartForm from '../Components/DietChartForm';
 
 const Manager = () => {
-  const [patients, setPatients] = useState([
-    { id: 1, name: 'Mahi', room: '101', diet: 'Low Sodium', status: 'Pending' },
-    { id: 2, name: 'Aman', room: '102', diet: 'High Protein', status: 'Approved' },
-  ]);
+  const [patients, setPatients] = useState([]);
 
+  
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/patients');
+        
+        const formattedPatients = data.map(patient => ({
+          id: patient._id,
+          name: patient.name,
+          room: patient.roomNumber,
+          allergies: patient.allergies[0] || 'Not Assigned',
+          morning: patient?.dietChart?.morning?.instructions || 'NON',
+          evening: patient?.dietChart?.evening?.instructions || 'NON',
+          night: patient?.dietChart?.night?.instructions || 'NON',
+          status: patient.status || 'Pending'
+        }));
+        setPatients(formattedPatients);
+      } catch (error) {
+        console.error('Error fetching patients:', error);
+      }
+    };
+    fetchPatients();
+  }, []);
+
+  
   const handleUpdateDiet = (patientId, newDiet) => {
     setPatients(prevPatients =>
       prevPatients.map(patient =>
@@ -19,10 +42,13 @@ const Manager = () => {
   };
 
   const columns = [
-    { field: 'name', headerName: 'Patient Name', width: 200 },
+    { field: 'name', headerName: 'Patient Name', width: 100 },
     { field: 'room', headerName: 'Room', width: 100 },
-    { field: 'diet', headerName: 'Diet Plan', width: 200 },
-    { field: 'status', headerName: 'Status', width: 150 },
+    { field: 'allergies', headerName: 'allergies', width: 100 },
+    { field: 'morning', headerName: 'morning Plan', width: 100 },
+    { field: 'evening', headerName: 'evening Plan', width: 100 },
+    { field: 'night', headerName: 'night Plan', width: 100 },
+    { field: 'status', headerName: 'Status', width: 150 }
   ];
 
   return (
@@ -32,17 +58,17 @@ const Manager = () => {
       </Typography>
 
       <Grid2 container spacing={3}>
-        {/* Patients Section */}
+        
         <Grid2 item xs={12} md={6}>
           <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>Patients</Typography>
-              <Patients />
+              <Patients patients={patients} />
             </CardContent>
           </Card>
         </Grid2>
 
-        {/* Diet Chart Form */}
+        
         <Grid2 item xs={12} md={6}>
           <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
             <CardContent>
@@ -52,7 +78,7 @@ const Manager = () => {
           </Card>
         </Grid2>
 
-        {/* Data Table */}
+    
         <Grid2 item xs={12}>
           <Card sx={{ boxShadow: 3, borderRadius: 3, p: 2 }}>
             <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
@@ -67,12 +93,12 @@ const Manager = () => {
                 sx={{
                   '& .MuiDataGrid-columnHeaders': {
                     backgroundColor: '#1976d2',
-                    color: '#fff',
-                    fontSize: 16,
+                    color: '#aaa',
+                    fontSize: 16
                   },
                   '& .MuiDataGrid-row:nth-of-type(even)': {
-                    backgroundColor: '#f5f5f5',
-                  },
+                    backgroundColor: '#f5f5f5'
+                  }
                 }}
               />
             </div>

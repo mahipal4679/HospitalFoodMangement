@@ -12,10 +12,21 @@ const Patient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/patients', formData);
-      // Handle success
+      const token = localStorage.getItem('authToken'); 
+      const response = await axios.post('http://localhost:5000/api/patients',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Patient added successfully!');
+      setFormData({ name: '', roomNumber: '', allergies: [] });
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error.response?.data || error.message);
+      alert('Failed to add patient. Check console for details.');
     }
   };
 
@@ -27,15 +38,18 @@ const Patient = () => {
             fullWidth
             label="Patient Name"
             value={formData.name}
-            onChange={e => setFormData({...formData, name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
           />
         </Grid2>
         <Grid2 item xs={6}>
           <TextField
             fullWidth
             label="Room Number"
+            type="number"
             value={formData.roomNumber}
-            onChange={e => setFormData({...formData, roomNumber: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
+            required
           />
         </Grid2>
         <Grid2 item xs={12}>
@@ -44,7 +58,7 @@ const Patient = () => {
             <Select
               multiple
               value={formData.allergies}
-              onChange={e => setFormData({...formData, allergies: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
             >
               <MenuItem value="nuts">Nuts</MenuItem>
               <MenuItem value="dairy">Dairy</MenuItem>
@@ -53,7 +67,9 @@ const Patient = () => {
           </FormControl>
         </Grid2>
         <Grid2 item xs={12}>
-          <Button type="submit" variant="contained">Add Patient</Button>
+          <Button type="submit" variant="contained">
+            Add Patient
+          </Button>
         </Grid2>
       </Grid2>
     </form>

@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
-  Grid2,
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography
+  Grid2, TextField, Button, FormControl, InputLabel,
+  Select, MenuItem, Typography
 } from '@mui/material';
 import axios from 'axios';
 
@@ -23,8 +17,8 @@ const DietChartForm = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get('/api/patients');
-        setPatients(response.data);
+        const { data } = await axios.get('http://localhost:5000/api/patients');
+        setPatients(data);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
@@ -32,21 +26,25 @@ const DietChartForm = () => {
     fetchPatients();
   }, []);
 
+
   const handleMealChange = (mealType, field, value) => {
-    setFormData(prev => ({
-      ...prev,
+    setFormData(prevState => ({
+      ...prevState,
       [mealType]: {
-        ...prev[mealType],
+        ...prevState[mealType],
         [field]: value
       }
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/diet-charts', formData);
+      await axios.post('http://localhost:5000/api/diet-charts', formData);
       alert('Diet chart created successfully!');
+
+
       setFormData({
         patient: '',
         morning: { ingredients: [], instructions: '' },
@@ -54,20 +52,23 @@ const DietChartForm = () => {
         night: { ingredients: [], instructions: '' }
       });
     } catch (error) {
-      console.error('Error creating diet chart:', error);
+      console.error('Error creating diet chart:', error.response?.data || error.message);
+      alert('Failed to create diet chart. Please try again.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <Typography variant="h6" gutterBottom>Create Diet Chart</Typography>
+
       <Grid2 container spacing={2}>
+
         <Grid2 item xs={12}>
           <FormControl fullWidth>
             <InputLabel>Select Patient</InputLabel>
             <Select
               value={formData.patient}
-              onChange={e => setFormData({ ...formData, patient: e.target.value })}
+              onChange={e => setFormData(prev => ({ ...prev, patient: e.target.value }))}
               required
             >
               {patients.map(patient => (
@@ -78,6 +79,7 @@ const DietChartForm = () => {
             </Select>
           </FormControl>
         </Grid2>
+
 
         {['morning', 'evening', 'night'].map(mealType => (
           <Grid2 item xs={12} md={4} key={mealType}>
@@ -108,6 +110,7 @@ const DietChartForm = () => {
             />
           </Grid2>
         ))}
+
 
         <Grid2 item xs={12}>
           <Button type="submit" variant="contained" color="primary">

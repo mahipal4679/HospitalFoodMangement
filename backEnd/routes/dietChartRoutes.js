@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
 const {
   createDietChart,
   getDietCharts,
@@ -9,29 +8,14 @@ const {
   deleteDietChart
 } = require('../controllers/dietChartController');
 
-// @route   POST api/diet-charts
-// @desc    Create new diet chart
-// @access  Private
-router.post('/', auth, createDietChart);
+router.post('/', createDietChart);
 
-// @route   GET api/diet-charts
-// @desc    Get all diet charts
-// @access  Private
-router.get('/', auth, getDietCharts);
+router.get('/', getDietCharts);
 
-// @route   GET api/diet-charts/patient/:patientId
-// @desc    Get diet chart by patient
-// @access  Private
-router.get('/patient/:patientId', auth, getDietChartByPatient);
+router.get('/patient/:patientId', getDietChartByPatient);
 
-// @route   PUT api/diet-charts/:id
-// @desc    Update diet chart
-// @access  Private
-router.put('/:id', auth, updateDietChart);
+router.put('/:id', updateDietChart);
 
-// @route   DELETE api/diet-charts/:id
-// @desc    Delete diet chart
-// @access  Private
-router.delete('/:id', auth, deleteDietChart);
+router.delete('/:id', deleteDietChart);
 
 module.exports = router;

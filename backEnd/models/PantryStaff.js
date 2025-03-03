@@ -55,7 +55,6 @@ const pantryStaffSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes
 pantryStaffSchema.index({ user: 1 }, { unique: true });
 pantryStaffSchema.index({ 'contact.phone': 1 }, { unique: true });
 

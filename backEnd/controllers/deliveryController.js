@@ -2,7 +2,6 @@ const Delivery = require('../models/Delivery');
 const Patient = require('../models/Patient');
 const PantryStaff = require('../models/PantryStaff');
 
-// @desc    Get all deliveries
 exports.getDeliveries = async (req, res) => {
   try {
     const deliveries = await Delivery.find()
@@ -15,7 +14,6 @@ exports.getDeliveries = async (req, res) => {
   }
 };
 
-// @desc    Create new delivery
 exports.createDelivery = async (req, res) => {
   const { patientId, mealType } = req.body;
 
@@ -36,7 +34,6 @@ exports.createDelivery = async (req, res) => {
   }
 };
 
-// @desc    Update delivery status
 exports.updateDeliveryStatus = async (req, res) => {
   const { status } = req.body;
 
@@ -56,7 +53,6 @@ exports.updateDeliveryStatus = async (req, res) => {
   }
 };
 
-// @desc    Assign delivery person
 exports.assignDeliveryPerson = async (req, res) => {
   const { deliveryPersonId } = req.body;
 

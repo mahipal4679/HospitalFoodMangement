@@ -4,27 +4,41 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/api/auth/login', { email, password });
-      setToken(res.data.token);
-      setUser(res.data.user);
+      console.log("Attempting login with:", email);
+
+      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+
+      console.log("API Response:", response?.data);
+
+      if (!response.data || !response.data.token || !response.data.user) {
+        throw new Error("Invalid API response structure");
+      }
+
+      const { token, user } = response.data;
+
+      sessionStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(user);
+
+      return user;
     } catch (error) {
-      throw error;
+      console.error("Login Error:", error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
   const logout = () => {
-    setToken(null);
+    sessionStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

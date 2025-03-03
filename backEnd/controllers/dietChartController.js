@@ -1,16 +1,16 @@
 const DietChart = require('../models/DietChart');
 const Patient = require('../models/Patient');
 
-// @desc    Create new diet chart
-exports.createDietChart = async (req, res) => {
-  const { patientId, morning, evening, night } = req.body;
 
+exports.createDietChart = async (req, res) => {
+  const { patient, morning, evening, night } = req.body;
+  const ss = patient;
   try {
-    const patient = await Patient.findById(patientId);
+    const patient = await Patient.findById(ss);
     if (!patient) return res.status(404).json({ msg: 'Patient not found' });
 
     const newDietChart = new DietChart({
-      patient: patientId,
+      patient: ss,
       morning,
       evening,
       night
@@ -18,7 +18,7 @@ exports.createDietChart = async (req, res) => {
 
     const dietChart = await newDietChart.save();
     
-    // Update patient's diet chart reference
+    
     patient.dietChart = dietChart._id;
     await patient.save();
 
@@ -29,7 +29,7 @@ exports.createDietChart = async (req, res) => {
   }
 };
 
-// @desc    Get all diet charts
+
 exports.getDietCharts = async (req, res) => {
   try {
     const dietCharts = await DietChart.find().populate('patient', 'name roomNumber');
@@ -40,7 +40,7 @@ exports.getDietCharts = async (req, res) => {
   }
 };
 
-// @desc    Get diet chart by patient
+
 exports.getDietChartByPatient = async (req, res) => {
   try {
     const dietChart = await DietChart.findOne({ patient: req.params.patientId })
@@ -55,7 +55,7 @@ exports.getDietChartByPatient = async (req, res) => {
   }
 };
 
-// @desc    Update diet chart
+
 exports.updateDietChart = async (req, res) => {
   const { morning, evening, night } = req.body;
 
@@ -75,7 +75,7 @@ exports.updateDietChart = async (req, res) => {
   }
 };
 
-// @desc    Delete diet chart
+
 exports.deleteDietChart = async (req, res) => {
   try {
     const dietChart = await DietChart.findById(req.params.id);

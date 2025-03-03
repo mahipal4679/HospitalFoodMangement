@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  DataGrid, 
+import {
+  DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
-  GridToolbarFilterButton 
+  GridToolbarFilterButton
 } from '@mui/x-data-grid';
 import { Chip, LinearProgress } from '@mui/material';
 import axios from 'axios';
@@ -15,7 +15,7 @@ const DeliveryTable = () => {
   useEffect(() => {
     const fetchDeliveries = async () => {
       try {
-        const response = await axios.get('/api/deliveries');
+        const response = await axios.get('http://localhost:5000/api/deliveries')
         setDeliveries(response.data);
         setLoading(false);
       } catch (error) {
@@ -27,48 +27,48 @@ const DeliveryTable = () => {
   }, []);
 
   const columns = [
-    { 
-      field: 'patientName', 
-      headerName: 'Patient', 
+    {
+      field: 'patientName',
+      headerName: 'Patient',
       width: 200,
       valueGetter: (params) => params.row.patient.name
     },
-    { 
-      field: 'roomNumber', 
-      headerName: 'Room', 
+    {
+      field: 'roomNumber',
+      headerName: 'Room',
       width: 120,
       valueGetter: (params) => params.row.patient.roomNumber
     },
-    { 
-      field: 'mealType', 
-      headerName: 'Meal Type', 
+    {
+      field: 'mealType',
+      headerName: 'Meal Type',
       width: 150,
       valueGetter: (params) => params.row.mealType.toUpperCase()
     },
-    { 
-      field: 'status', 
-      headerName: 'Status', 
+    {
+      field: 'status',
+      headerName: 'Status',
       width: 150,
       renderCell: (params) => (
         <Chip
           label={params.value}
           color={
             params.value === 'delivered' ? 'success' :
-            params.value === 'preparing' ? 'warning' : 'error'
+              params.value === 'preparing' ? 'warning' : 'error'
           }
           variant="outlined"
         />
       )
     },
-    { 
-      field: 'deliveryPerson', 
-      headerName: 'Delivery Staff', 
+    {
+      field: 'deliveryPerson',
+      headerName: 'Delivery Staff',
       width: 200,
       valueGetter: (params) => params.row.deliveryPerson?.name || 'Not assigned'
     },
-    { 
-      field: 'timestamp', 
-      headerName: 'Delivery Time', 
+    {
+      field: 'timestamp',
+      headerName: 'Delivery Time',
       width: 200,
       valueGetter: (params) => new Date(params.value).toLocaleString()
     }
